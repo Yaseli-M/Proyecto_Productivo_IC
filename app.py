@@ -9,8 +9,8 @@ from supabase import create_client, Client
 st.set_page_config(page_title="Dashboard Crediticio", layout="wide")
 
 # Supabase config
-url = "https://igdyolghmogpjmjlpzgs.supabase.co"
-key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlnZHlvbGdobW9ncGptamxwemdzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM5OTQwNTUsImV4cCI6MjA1OTU3MDA1NX0.Z7ek0HjEOkZ-4heMSzrfMCDoUBg9M7mpS6vE504bgPc"
+url = "https://syntshkpxmopbknqqaln.supabase.co"
+key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5bnRzaGtweG1vcGJrbnFxYWxuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM5NzE0MTgsImV4cCI6MjA1OTU0NzQxOH0.WzqeU_dOoxgA75qY9HE0aP7hYkr1OQW162iIAikSZnc"
 supabase: Client = create_client(url, key)
 
 # Función para cargar los datos
