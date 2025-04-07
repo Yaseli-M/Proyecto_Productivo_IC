@@ -1,26 +1,47 @@
+# app.py
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
 from supabase import create_client, Client
 
-# Conexión a Supabase
-SUPABASE_URL = "https://igdyolghmogpjmjlpzgs.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlnZHlvbGdobW9ncGptamxwemdzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM5OTQwNTUsImV4cCI6MjA1OTU3MDA1NX0.Z7ek0HjEOkZ-4heMSzrfMCDoUBg9M7mpS6vE504bgPc"
+# Configura Supabase
+url = "https://igdyolghmogpjmjlpzgs.supabase.co"
+key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+supabase: Client = create_client(url, key)
 
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+# Título
+st.title("Predicción de Riesgo Crediticio")
 
-# Cargar los datos desde la tabla Supabase
+# Carga los datos desde Supabase
 @st.cache_data
-def load_data():
+def cargar_datos():
     response = supabase.table("credit_risk_data").select("*").execute()
-    return pd.DataFrame(response.data)
+    data = pd.DataFrame(response.data)
+    return data
 
-# Streamlit app
-st.set_page_config(page_title="Datos de Riesgo Crediticio", layout="wide")
-st.title("Datos desde Supabase: Riesgo Crediticio")
+df = cargar_datos()
 
-df = load_data()
+# Mostrar tabla
+st.subheader("Datos cargados")
+st.dataframe(df.head())
 
-st.write(f"Total de registros: {len(df)}")
-st.dataframe(df)
+# Estadísticas
+st.subheader("Resumen Estadístico")
+st.write(df.describe())
 
-print("DataFrame cargado desde Supabase:")
+# Visualización: Distribución de riesgo
+st.subheader("Distribución del Riesgo Crediticio")
+if 'risk' in df.columns:
+    fig, ax = plt.subplots()
+    sns.countplot(data=df, x='risk', ax=ax)
+    st.pyplot(fig)
+else:
+    st.warning("La columna 'risk' no fue encontrada.")
+
+# Visualización: Correlación entre variables
+st.subheader("Matriz de Correlación")
+fig2, ax2 = plt.subplots(figsize=(10, 6))
+sns.heatmap(df.select_dtypes(include=[np.number]).corr(), annot=True, cmap='coolwarm', ax=ax2)
+st.pyplot(fig2)
