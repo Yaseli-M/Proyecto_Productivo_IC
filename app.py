@@ -17,7 +17,7 @@ supabase: Client = create_client(url, key)
 @st.cache_data
 def cargar_datos():
     try:
-        response = supabase.table("credit_risk_score").select("*").execute()
+        response = supabase.table("credit_risk_data").select("*").execute()
         data = response.data
         if data:
             return pd.DataFrame(data)
